@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "windows",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\${workspaceFolderBasename}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "windows"
+        }
+    ],
+    "version": "2.0.0"
+}
