@@ -85,6 +85,8 @@ struct Layer {
         ImVec2 size = { 0.3f, 0.3f };
         ImVec4 corner_radii = { 0.15f, 0.15f, 0.15f, 0.15f };
     } rectangle;
+
+    bool created_this_frame = true;
 };
 
 std::string build_sdf_function(Layer* layers);
@@ -227,7 +229,11 @@ void program_frame() {
             Layer &layer = layers[i];
             PushID(i);
             if (CollapsingHeader((std::stringstream {} << i << ": " << layer.name).str().c_str(), ImGuiTreeNodeFlags_DefaultOpen)) {
-                InputText("name", layer.name, MAX_NUM_LAYER_NAME_BYTES);
+                if (layer.created_this_frame) {
+                    SetKeyboardFocusHere(0);
+                }
+
+                InputText("name", layer.name, MAX_NUM_LAYER_NAME_BYTES, ImGuiInputTextFlags_CharsNoBlank);
                 inline_replace(layer.name, ' ', '_');
 
                 {
@@ -283,6 +289,8 @@ void program_frame() {
             }
 
             PopID();
+
+            layer.created_this_frame = false;
         }
 
         if (!(IsWindowAppearing() || IsWindowCollapsed())) { 
