@@ -108,7 +108,7 @@ enum class Preview_Mode : unsigned int {
 struct Preview_Settings {
     Preview_Mode mode = Preview_Mode::Mask;
 
-    float blur_amount = 0.01f;
+    float blur_amount = 0.005f;
 
     float division_distance = 0.25f;
     float division_thickness = 0.01f;
