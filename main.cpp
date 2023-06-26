@@ -75,6 +75,7 @@ struct Layer {
     char name[MAX_NUM_LAYER_NAME_BYTES] = { 0 };
 
     float position[2] = { 0.0f, 0.0f };
+    float rotation360 = 0.0f;
 
     struct {
         float radius = 0.3f;
@@ -247,6 +248,12 @@ void program_frame() {
 
                 if (InputFloat2("Position", layer.position)) {
                     state.canvas.needs_reshader = true;
+                }
+
+                if (layer.shape != Layer_Shape::Circle) {
+                    if (InputFloat("Rotation (Degrees)", &layer.rotation360)) {
+                        state.canvas.needs_reshader = true;
+                    }
                 }
 
                 switch (layer.shape) {
@@ -569,7 +576,7 @@ std::string build_sdf_function(Layer* layers) {
             case Layer_Shape::Rectangle: {
                 ImVec2 size    = layer.rectangle.size;
                 ImVec4 corners = layer.rectangle.corner_radii;
-                text << "    float " + layer_name + " = sdf_rect(coord, float2(" << layer.position[0] << ", " << layer.position[1] << "), float2(" << size.x << ", " << size.y << "), float4(" << corners.y << ", " << corners.w << ", " << corners.x << ", " << corners.z << "));\n";
+                text << "    float " + layer_name + " = sdf_rect(coord, float2(" << layer.position[0] << ", " << layer.position[1] << "), " << layer.rotation360 / 360.0f << ", float2(" << size.x << ", " << size.y << "), float4(" << corners.y << ", " << corners.w << ", " << corners.x << ", " << corners.z << "));\n";
                 break;
             }
 

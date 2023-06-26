@@ -1,10 +1,17 @@
+const static float TAU = 6.2831855;
+
 float sdf_circle(float2 coord, float2 position, float radius) {
     coord -= position;
     return distance(coord, float2(0.0, 0.0)) - radius;
 }
 
-float sdf_rect(float2 coord, float2 position, float2 size, float4 corner_radii)
+float sdf_rect(float2 coord, float2 position, float turn, float2 size, float4 corner_radii)
 {
+    float cturn = cos(turn * TAU);
+    float sturn = sin(turn * TAU);
+
+    coord = float2(coord.x * cturn - coord.y * sturn, coord.x * sturn + coord.y * cturn);
+
     coord -= position;
 
     corner_radii.xy = (coord.x > 0.0) ? corner_radii.xy : corner_radii.zw;
