@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Compile
+        run: |
+          cl.exe /Zi /EHsc /nologo /std:c++20 /Iimgui /Fe sdfed-2d.exe main.cpp imgui/imgui*.cpp imgui/backends/imgui_impl_win32.cpp imgui/backends/imgui_impl_dx11.cpp
